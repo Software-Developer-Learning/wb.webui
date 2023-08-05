@@ -25,3 +25,5 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ```
 
 - Creating base folder `components`, `constants`, `hooks`, `api`, `utils` in `src` folder.
+
+- Start JSON Server: `json-server --watch db.json --port 4000`
