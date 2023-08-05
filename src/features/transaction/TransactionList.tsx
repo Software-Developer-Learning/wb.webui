@@ -11,12 +11,12 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Backdrop } from '@mui/material';
 import DetailTransaction from './DetailTransaction';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from 'app/store';
 import { Transaction } from 'types/transaction.type';
 import { useEffect, useRef } from 'react';
-import http from 'untils/http';
-import { error } from 'console';
+import { getTransactionListAsync } from './transactionSlice';
+import { useAppDispatch } from 'app/hooks';
 
 function Row(props: { row: Transaction }) {
   const { row } = props;
@@ -62,30 +62,18 @@ function Row(props: { row: Transaction }) {
 
 
 export default function TransactionList() {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const effectRan = useRef(false)
 
 
   useEffect(()=>{
     if(effectRan.current === false){
-      http
-      .get('bill')
-      .then(res => {
-        console.log(res)
-        dispatch({
-          type: "transaction/getTransactionListSuccess",
-          payload: res.data
-        })
-      })
-      .catch(error => {
-        console.log("error", error)
-      })
-
+      dispatch(getTransactionListAsync())
       return () => {
         effectRan.current = true
       }
     }
-  },[])
+  },[dispatch])
 
   const transactionList = useSelector((state: RootState) => state.transaction.transactionList)
 
